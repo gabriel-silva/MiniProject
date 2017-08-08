@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MiniProject</string>
+    <string name="title_activity_main">MiniProject</string>
+    <string name="messege">Aviso! deixe ao menos uma caixa marcada.</string>
+    <string name="restaurantes">Restaurantes</string>
+    <string name="bancos">Bancos</string>
+    <string name="postos">Postos</string>
+    <string name="locais_publicos">Locais Públicos</string>
+    <string name="compras">Compras</string>
+    <string name="aplicar">Aplicar</string>
+</resources>
