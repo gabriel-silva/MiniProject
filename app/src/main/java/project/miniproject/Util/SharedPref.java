@@ -3,7 +3,11 @@ package project.miniproject.Util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.CheckBox;
 import android.widget.GridLayout;
+
+import java.util.ArrayList;
+
 import project.miniproject.R;
 import static android.content.Context.MODE_PRIVATE;
 
@@ -69,6 +73,20 @@ public class SharedPref {
     public static boolean isVisible(Context context) {
         String state = getPref(context).getString("frameVisible", "");
         return state.equals("visible");
+    }
+
+    public static void setStateChecked(Context context, ArrayList<CheckBox> checkBox){
+
+        SharedPreferences.Editor checked = SharedPref.getPref(context).edit();
+        for (int i = 0; i < checkBox.size(); i++) {
+            if (!checkBox.get(i).isChecked()) {
+                checked.putInt("category" + (i + 1), 0);
+            } else {
+                checked.putInt("category" + (i + 1), (i + 1));
+            }
+
+        }
+        checked.commit();
     }
 
 }

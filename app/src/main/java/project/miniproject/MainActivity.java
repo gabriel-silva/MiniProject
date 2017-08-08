@@ -99,33 +99,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
 
-                SharedPreferences.Editor checked = SharedPref.getPref(getApplication()).edit();
-
                 //aguardando estado do checkbox
-                for (int i = 0; i < checkBox.size(); i++) {
-                    if (!checkBox.get(i).isChecked()) {
-                        checked.putInt("category" + (i + 1), 0);
-                    } else {
-                        checked.putInt("category" + (i + 1), (i + 1));
-                    }
-
-                }
-                checked.commit();
+                SharedPref.setStateChecked(getApplication(), checkBox);
 
                 //se todos estiverem desmarcados, será chamada a função que preenche todos os checkboxs
-                boolean allNotChecked = true;
-                for (CheckBox c : checkBox) {
-                    allNotChecked = allNotChecked && !c.isChecked();
-                }
-                if (allNotChecked) {
-                    ShowMessage.message(getApplication());
-                    marker.checkedPoint(getApplication());
-                    comprasAtive = false;
-                }
+                fillCheckbox();
 
                 resetMap();
-
-
             }
         });
 
@@ -148,7 +128,18 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
         //variavel de controle de ajuste de zoom
         comprasAtive = true;
+    }
 
+    public void fillCheckbox(){
+        boolean allNotChecked = true;
+        for (CheckBox c : checkBox) {
+            allNotChecked = allNotChecked && !c.isChecked();
+        }
+        if (allNotChecked) {
+            ShowMessage.message(getApplication());
+            marker.checkedPoint(getApplication());
+            comprasAtive = false;
+        }
     }
 
     private void centerMap(double latitude, double longitude, int zoom) {
