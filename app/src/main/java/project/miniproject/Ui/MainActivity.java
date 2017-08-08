@@ -29,6 +29,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private Button button;
     private Marker marker;
     private ArrayList<CheckBox> checkBox;
+    boolean comprasAtive = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
 
         MapUtil.setMap(googleMap);
-        centerMap(-8.0587303517894853, -34.872104823589325);
+        centerMap(-8.08584967414886, -34.894552230834961, 13);
         marker.logicMarker(this);
 
     }
@@ -119,8 +120,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 if (allNotChecked) {
                     ShowMessage.message(getApplication());
                     marker.checkedPoint(getApplication());
+                    comprasAtive = false;
                 }
+
                 resetMap();
+
+
             }
         });
 
@@ -137,13 +142,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             frameLayout.setVisibility(View.INVISIBLE);
             SharedPref.stateInvisibleFrameLayout(this);
         }
+        //ajustando o mapa, quando o checkbox de compras não tiver marcado
+        if (!checkBox.get(4).isChecked() && comprasAtive) {
+            centerMap(-8.0587303517894853, -34.872104823589325, 15);
+        }
+        //variavel de controle de ajuste de zoom
+        comprasAtive = true;
 
     }
 
-    private void centerMap(double latitude, double longitude) {
+    private void centerMap(double latitude, double longitude, int zoom) {
         LatLng center = new LatLng(latitude, longitude);
-        MapUtil.getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(center, 15));
+        MapUtil.getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(center, zoom));
     }
-
-
 }

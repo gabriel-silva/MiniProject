@@ -11,5 +11,6 @@ import project.miniproject.R;
 public class ShowMessage {
     public static void message(Context context){
         Toast.makeText(context, R.string.messege , Toast.LENGTH_LONG).show();
+
     }
 }
