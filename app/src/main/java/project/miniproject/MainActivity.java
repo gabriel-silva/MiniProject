@@ -1,6 +1,5 @@
 package project.miniproject;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -19,7 +18,6 @@ import java.util.ArrayList;
 
 import project.miniproject.Base.ShowMessage;
 import project.miniproject.Util.Marker;
-import project.miniproject.R;
 import project.miniproject.Util.MapUtil;
 import project.miniproject.Util.SharedPref;
 
@@ -99,8 +97,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
 
-                //aguardando estado do checkbox
-                SharedPref.setStateChecked(getApplication(), checkBox);
+                //aguardando estado do checkboxs
+                SharedPref.setStateCheckBox(getApplication(), checkBox);
 
                 //se todos estiverem desmarcados, será chamada a função que preenche todos os checkboxs
                 fillCheckbox();

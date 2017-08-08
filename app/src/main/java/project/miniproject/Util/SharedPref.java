@@ -75,7 +75,7 @@ public class SharedPref {
         return state.equals("visible");
     }
 
-    public static void setStateChecked(Context context, ArrayList<CheckBox> checkBox){
+    public static void setStateCheckBox(Context context, ArrayList<CheckBox> checkBox){
 
         SharedPreferences.Editor checked = SharedPref.getPref(context).edit();
         for (int i = 0; i < checkBox.size(); i++) {
