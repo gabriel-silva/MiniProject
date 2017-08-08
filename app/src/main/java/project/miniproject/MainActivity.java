@@ -1,4 +1,4 @@
-package project.miniproject.Ui;
+package project.miniproject;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;

@@ -18,7 +18,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Ui.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
