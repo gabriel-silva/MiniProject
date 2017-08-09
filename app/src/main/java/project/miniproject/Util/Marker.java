@@ -17,11 +17,7 @@ import java.util.ArrayList;
 
 import project.miniproject.R;
 
-public class Marker extends SharedPref{
-
-    public Marker(Activity activity) {
-        super(activity);
-    }
+public class Marker {
 
     private void addMarker(JSONArray jsonArray, int count) throws JSONException {
 
@@ -39,7 +35,7 @@ public class Marker extends SharedPref{
 
         try {
 
-            int[] checked = getChecked(context);
+            int[] checked = SharedPref.getChecked(context);
             JSONArray jsonArray = new JSONArray(AssetsHelper.fileJson(context));
 
             for (int i = 0; i < jsonArray.length(); i++) {

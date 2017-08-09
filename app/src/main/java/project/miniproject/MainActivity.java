@@ -1,5 +1,6 @@
 package project.miniproject;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -38,7 +39,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         frameLayout = (FrameLayout) findViewById(R.id.checkbox_dialog);
-        marker = new Marker(this);
+        marker = new Marker();
 
         //começando o frameLayout invisível
         if (!SharedPref.isVisible(this)) {
@@ -47,7 +48,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         //verificação de estado das checkboxs
         if (!SharedPref.isEmptyState(this)) {
-            marker.checkedPoint(this);
+            SharedPref.checkedPoint(this);
         }
 
     }
@@ -76,16 +77,24 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         GridLayout gridLayout = (GridLayout) findViewById(R.id.grid_layout);
         checkBox = new ArrayList<CheckBox>();
 
-        for (int count = 0; count < gridLayout.getChildCount(); count++) {
+        //guardando quantidade de checkboxs
+        SharedPreferences.Editor sizeChecked = SharedPref.getPref(this).edit();
+
+        int count = 0;
+        for (int i = 0; i < gridLayout.getChildCount(); i++) {
             View v = gridLayout.getChildAt(count);
 
             if (v instanceof CheckBox) {
                 checkBox.add((CheckBox) gridLayout.getChildAt(count));
+                count++;
             }
         }
+        sizeChecked.putInt("countCheckBox", count);
+        sizeChecked.commit();
+
 
         //marcar todos os checkboxs de acordo com a persistência
-        int[] checked = marker.getChecked(this);
+        int[] checked = SharedPref.getChecked(this);
         for (int i = 0; i < checked.length; i++) {
             if (checked[i] == i + 1) {
                 checkBox.get(i).setChecked(true);
@@ -108,7 +117,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
         //guardando o estado como checked
-        SharedPref.state(getApplication());
+        SharedPref.state(this);
 
     }
 
@@ -135,7 +144,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
         if (allNotChecked) {
             ShowMessage.message(getApplication());
-            marker.checkedPoint(getApplication());
+            SharedPref.checkedPoint(getApplication());
             comprasAtive = false;
         }
     }
