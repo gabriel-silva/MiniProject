@@ -28,7 +28,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private Button button;
     private Marker marker;
     private ArrayList<CheckBox> checkBox;
-    boolean comprasAtive = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +39,25 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         frameLayout = (FrameLayout) findViewById(R.id.checkbox_dialog);
         marker = new Marker();
+
+        GridLayout gridLayout = (GridLayout) findViewById(R.id.grid_layout);
+        checkBox = new ArrayList<CheckBox>();
+
+        //guardando quantidade de checkboxs
+        SharedPreferences.Editor sizeChecked = SharedPref.getPref(this).edit();
+
+        int count = 0;
+        for (int i = 0; i < gridLayout.getChildCount(); i++) {
+            View v = gridLayout.getChildAt(count);
+
+            //preenchendo ArrayList
+            if (v instanceof CheckBox) {
+                checkBox.add((CheckBox) gridLayout.getChildAt(count));
+                count++;
+            }
+        }
+        sizeChecked.putInt("countCheckBox", count);
+        sizeChecked.commit();
 
         //começando o frameLayout invisível
         if (!SharedPref.isVisible(this)) {
@@ -55,9 +73,16 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         MapUtil.setMap(googleMap);
-        centerMap(-8.08584967414886, -34.894552230834961, 13);
+
+        //ajustando o mapa, quando o checkbox de compras não tiver marcado
+        int category = SharedPref.getPref(this).getInt("category5", 0);
+        if (category != 5) {
+            centerMap(-8.0587303517894853, -34.872104823589325, 15);
+        }else{
+            centerMap(-8.08584967414886, -34.894552230834961, 13);
+        }
+
         marker.logicMarker(this);
 
     }
@@ -73,25 +98,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             frameLayout.setVisibility(View.INVISIBLE);
             SharedPref.stateInvisibleFrameLayout(this);
         }
-
-        GridLayout gridLayout = (GridLayout) findViewById(R.id.grid_layout);
-        checkBox = new ArrayList<CheckBox>();
-
-        //guardando quantidade de checkboxs
-        SharedPreferences.Editor sizeChecked = SharedPref.getPref(this).edit();
-
-        int count = 0;
-        for (int i = 0; i < gridLayout.getChildCount(); i++) {
-            View v = gridLayout.getChildAt(count);
-
-            if (v instanceof CheckBox) {
-                checkBox.add((CheckBox) gridLayout.getChildAt(count));
-                count++;
-            }
-        }
-        sizeChecked.putInt("countCheckBox", count);
-        sizeChecked.commit();
-
 
         //marcar todos os checkboxs de acordo com a persistência
         int[] checked = SharedPref.getChecked(this);
@@ -129,15 +135,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             frameLayout.setVisibility(View.INVISIBLE);
             SharedPref.stateInvisibleFrameLayout(this);
         }
-        //ajustando o mapa, quando o checkbox de compras não tiver marcado
-        if (!checkBox.get(4).isChecked() && comprasAtive) {
-            centerMap(-8.0587303517894853, -34.872104823589325, 15);
-        }
-        //variavel de controle de ajuste de zoom
-        comprasAtive = true;
+
     }
 
-    public void fillCheckbox(){
+    public void fillCheckbox() {
         boolean allNotChecked = true;
         for (CheckBox c : checkBox) {
             allNotChecked = allNotChecked && !c.isChecked();
@@ -145,7 +146,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         if (allNotChecked) {
             ShowMessage.message(getApplication());
             SharedPref.checkedPoint(getApplication());
-            comprasAtive = false;
         }
     }
 
